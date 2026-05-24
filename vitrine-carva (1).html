@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VITRINE CARVA — Gadgets Automotivos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #e00;
+    --red-dark: #b50000;
+    --red-glow: #cc000033;
+    --black: #0a0a0a;
+    --card: #111116;
+    --surface: #16161d;
+    --border: #2a2a35;
+    --text: #f0f0f0;
+    --muted: #888;
+    --radius: 10px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: #080808;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+    text-decoration: none;
+  }
+  .logo span { color: var(--red); }
+
+  .topbar-search {
+    display: flex;
+    align-items: center;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    flex: 1;
+    max-width: 420px;
+    margin: 0 1.5rem;
+  }
+  .topbar-search input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 9px 14px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+  }
+  .topbar-search input::placeholder { color: var(--muted); }
+  .topbar-search button {
+    background: var(--red);
+    border: none;
+    padding: 9px 14px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .topbar-search button:hover { background: var(--red-dark); }
+
+  .topbar-actions { display: flex; gap: 8px; }
+
+  .btn-admin {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn-admin:hover { border-color: var(--red); color: var(--red); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0a0a0a 0%, #12000a 50%, #0a0010 100%);
+    padding: 4rem 1.5rem 3rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, #cc000022 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(42px, 10vw, 80px);
+    font-weight: 700;
+    letter-spacing: 4px;
+    line-height: 1;
+    margin-bottom: 1rem;
+    color: #fff;
+  }
+  .hero h1 span { color: var(--red); }
+
+  .hero-slogan {
+    font-size: clamp(14px, 3vw, 17px);
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    letter-spacing: 0.5px;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 13px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: background 0.15s, transform 0.15s;
+  }
+  .hero-cta:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+  /* ── CATEGORY PILLS ── */
+  .cats-wrap {
+    padding: 1.25rem 1.5rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cats-wrap::-webkit-scrollbar { display: none; }
+
+  .cat-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cat-pill:hover, .cat-pill.active {
+    background: #1a0000;
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 2.5rem 1.5rem 0;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: var(--red);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .section-title .tag.offer { background: #b06000; }
+
+  .see-all {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1px;
+    transition: color 0.15s;
+    cursor: pointer;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: 'Inter', sans-serif;
+  }
+  .see-all:hover { color: var(--red); border-color: var(--red); }
+
+  /* ── PRODUCT GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    padding-bottom: 2.5rem;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s, transform 0.15s;
+    position: relative;
+  }
+  .card:hover {
+    border-color: #cc0000aa;
+    transform: translateY(-3px);
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    z-index: 2;
+  }
+  .badge-hot { background: var(--red); color: #fff; }
+  .badge-deal { background: #b06000; color: #fff; }
+  .badge-new { background: #006080; color: #fff; }
+
+  .card-img {
+    width: 100%;
+    padding-top: 68%;
+    position: relative;
+    background: #1a1a22;
+    overflow: hidden;
+  }
+  .card-img img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+  .card:hover .card-img img { transform: scale(1.04); }
+
+  .card-img-placeholder {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: #333;
+  }
+
+  .card-body {
+    padding: 12px 14px 14px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .card-cat {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+  }
+
+  .card-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-desc {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .card-store {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 2px;
+  }
+  .store-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+  }
+  .store-shopee { background: #ee4d2d; }
+  .store-ml { background: #ffe600; }
+  .store-label { font-size: 10px; color: var(--muted); font-weight: 500; }
+
+  .card-footer {
+    padding: 0 14px 14px;
+  }
+
+  .btn-buy {
+    display: block;
+    width: 100%;
+    background: var(--red);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px;
+    border-radius: 7px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-buy:hover { background: var(--red-dark); transform: scale(0.98); }
+
+  /* ── EMPTY STATE ── */
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+  }
+  .empty p { font-size: 14px; margin-top: 8px; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 1.5rem;
+  }
+
+  /* ── STRIP BANNER ── */
+  .strip {
+    background: var(--red);
+    padding: 10px 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #080808;
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 2;
+  }
+  footer strong { color: var(--red); font-family: 'Rajdhani', sans-serif; font-size: 16px; letter-spacing: 2px; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 520px;
+    padding: 1.75rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .modal h2 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 1.25rem;
+    color: #fff;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .modal-close:hover { color: var(--red); }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { border-color: var(--red); }
+
+  .form-group select option { background: #1a1a22; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .btn-primary {
+    background: var(--red);
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 11px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .btn-primary:hover { background: var(--red-dark); }
+
+  /* ── PRODUCT LIST IN ADMIN ── */
+  .prod-list { margin-top: 1.25rem; }
+  .prod-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .prod-row:last-child { border-bottom: none; }
+  .prod-row-img {
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    background: var(--card);
+    object-fit: cover;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    overflow: hidden;
+  }
+  .prod-row-img img { width: 100%; height: 100%; object-fit: cover; }
+  .prod-row-info { flex: 1; min-width: 0; }
+  .prod-row-name { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .prod-row-cat { font-size: 11px; color: var(--muted); }
+  .prod-row-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .btn-edit, .btn-del {
+    background: none;
+    border: 1px solid var(--border);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-edit { color: var(--muted); }
+  .btn-edit:hover { border-color: #888; color: #fff; }
+  .btn-del { color: var(--red); }
+  .btn-del:hover { background: #1a0000; border-color: var(--red); }
+
+  /* ── NO RESULTS ── */
+  .no-result { display: none; }
+  .no-result.show { display: flex; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .topbar-search { max-width: none; flex: 1; }
+    .logo { font-size: 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero { padding: 2.5rem 1rem 2rem; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  }
+
+  @media (max-width: 400px) {
+    .topbar { gap: 8px; }
+    .topbar-actions { display: none; }
+    .topbar-search { margin: 0; }
+  }
+
+  .section-all { padding: 2.5rem 1.5rem; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a class="logo" href="#">VITRINE <span>CARVA</span></a>
+  <div class="topbar-search">
+    <input type="text" id="busca" placeholder="Buscar produto..." oninput="filtrarBusca()">
+    <button onclick="filtrarBusca()">🔍</button>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn-admin" onclick="abrirAdmin()">+ Produto</button>
+    <button class="btn-admin" onclick="abrirLista()">⚙ Gerenciar</button>
+  </div>
+</header>
+
+<!-- STRIP -->
+<div class="strip">
+  🚗 Frete grátis em selecionados &nbsp;•&nbsp; 🔥 Ofertas por tempo limitado &nbsp;•&nbsp; 🛒 Clique e compre com segurança
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Gadgets &amp; Acessórios Automotivos</p>
+  <h1>VITRINE<br><span>CARVA</span></h1>
+  <p class="hero-slogan">Os melhores gadgets automotivos em um só lugar</p>
+  <a href="#produtos" class="hero-cta">🛒 Ver todos os produtos</a>
+</section>
+
+<!-- CATEGORIAS -->
+<nav class="cats-wrap" id="categorias">
+  <button class="cat-pill active" onclick="filtrarCat(this,'todos')">🚗 Todos</button>
+  <button class="cat-pill" onclick="filtrarCat(this,'seguranca')">🔒 Segurança</button>
+  <button class="cat-pill" onclick="filtrarCat(this,'tecnologia')">📱 Tecnologia</button>
+  <button class="cat-pill" onclick="filtrarCat(this,'estetica')">✨ Estética</button>
+  <button class="cat-pill" onclick="filtrarCat(this,'organizacao')">🎒 Organização</button>
+  <button class="cat-pill" onclick="filtrarCat(this,'limpeza')">🧹 Limpeza</button>
+</nav>
+
+<!-- MAIS VENDIDOS -->
+<section class="section" id="mais-vendidos-section">
+  <div class="section-header">
+    <h2 class="section-title">🔥 Mais Vendidos <span class="tag">Hot</span></h2>
+    <button class="see-all" onclick="filtrarCat(document.querySelector('.cat-pill'),'todos')">Ver todos</button>
+  </div>
+  <div class="grid" id="grid-hot"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MELHORES OFERTAS -->
+<section class="section" id="ofertas-section">
+  <div class="section-header">
+    <h2 class="section-title">💰 Melhores Ofertas do Dia <span class="tag offer">Oferta</span></h2>
+  </div>
+  <div class="grid" id="grid-deal"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TODOS OS PRODUTOS -->
+<section class="section-all" id="produtos">
+  <div class="section-header">
+    <h2 class="section-title" id="titulo-todos">Todos os Produtos</h2>
+    <span id="qtd-label" style="font-size:12px;color:var(--muted)"></span>
+  </div>
+  <div class="grid" id="grid-todos"></div>
+  <div class="no-result" id="no-result" style="grid-column:1/-1;flex-direction:column;align-items:center;padding:3rem 1rem;color:var(--muted);">
+    <div style="font-size:48px">🔍</div>
+    <p style="margin-top:8px;font-size:14px">Nenhum produto encontrado</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>VITRINE CARVA</strong></p>
+  <p>Os melhores gadgets automotivos em um só lugar</p>
+  <p style="margin-top:8px">Este site contém links de afiliado. Ao comprar, você apoia nosso trabalho sem custo adicional.</p>
+  <p>Shopee &amp; Mercado Livre • © 2025 Vitrine Carva</p>
+</footer>
+
+<!-- MODAL ADICIONAR / EDITAR -->
+<div class="modal-overlay" id="modal-form">
+  <div class="modal">
+    <button class="modal-close" onclick="fecharModal('modal-form')">✕</button>
+    <h2 id="modal-form-title">Adicionar Produto</h2>
+    <input type="hidden" id="edit-id">
+
+    <div class="form-group">
+      <label>Nome do Produto *</label>
+      <input type="text" id="f-nome" placeholder="Ex: Câmera de ré com tela 4.3&quot;">
+    </div>
+
+    <div class="form-group">
+      <label>Descrição curta</label>
+      <textarea id="f-desc" placeholder="Frase curta e persuasiva que destaca o benefício principal..."></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Categoria *</label>
+        <select id="f-cat">
+          <option value="seguranca">🔒 Segurança</option>
+          <option value="tecnologia">📱 Tecnologia</option>
+          <option value="estetica">✨ Estética</option>
+          <option value="organizacao">🎒 Organização</option>
+          <option value="limpeza">🧹 Limpeza</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Loja</label>
+        <select id="f-loja">
+          <option value="shopee">Shopee</option>
+          <option value="ml">Mercado Livre</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Link de afiliado *</label>
+      <input type="url" id="f-link" placeholder="https://...">
+    </div>
+
+    <div class="form-group">
+      <label>URL da imagem (opcional)</label>
+      <input type="url" id="f-img" placeholder="https://... (deixe em branco para emoji)">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Emoji (se sem imagem)</label>
+        <input type="text" id="f-emoji" placeholder="🚗" maxlength="4">
+      </div>
+      <div class="form-group">
+        <label>Destaque</label>
+        <select id="f-badge">
+          <option value="">Nenhum</option>
+          <option value="hot">🔥 Mais vendido</option>
+          <option value="deal">💰 Oferta do dia</option>
+          <option value="new">🆕 Novidade</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Texto do botão</label>
+      <select id="f-btn">
+        <option value="Ver Oferta →">Ver Oferta →</option>
+        <option value="Comprar Agora →">Comprar Agora →</option>
+        <option value="Ver no Shopee →">Ver no Shopee →</option>
+        <option value="Ver no Mercado Livre →">Ver no Mercado Livre →</option>
+      </select>
+    </div>
+
+    <button class="btn-primary" onclick="salvarProduto()">💾 Salvar Produto</button>
+  </div>
+</div>
+
+<!-- MODAL GERENCIAR -->
+<div class="modal-overlay" id="modal-lista">
+  <div class="modal">
+    <button class="modal-close" onclick="fecharModal('modal-lista')">✕</button>
+    <h2>Gerenciar Produtos</h2>
+    <div class="prod-list" id="prod-list"></div>
+    <button class="btn-primary" style="margin-top:1.25rem" onclick="fecharModal('modal-lista');abrirAdmin()">+ Adicionar novo produto</button>
+  </div>
+</div>
+
+<script>
+const CATS = {
+  seguranca: '🔒 Segurança',
+  tecnologia: '📱 Tecnologia',
+  estetica: '✨ Estética',
+  organizacao: '🎒 Organização',
+  limpeza: '🧹 Limpeza'
+};
+
+const LOJAS = { shopee: 'Shopee', ml: 'Mercado Livre', outro: 'Outro' };
+const STORE_DOT = { shopee: 'store-shopee', ml: 'store-ml', outro: '' };
+
+let produtos = JSON.parse(localStorage.getItem('vc_produtos') || 'null') || [
+  { id: 1, nome: 'Câmera de ré 4.3" com visão noturna', desc: 'Estacione com segurança total. Visão noturna cristalina e instalação plug-and-play.', cat: 'seguranca', loja: 'shopee', link: '#', img: '', emoji: '📷', badge: 'hot', btn: 'Ver Oferta →' },
+  { id: 2, nome: 'Suporte veicular magnético 360°', desc: 'Giro completo, fixação poderosa. Compatível com qualquer celular.', cat: 'tecnologia', loja: 'shopee', link: '#', img: '', emoji: '📱', badge: 'hot', btn: 'Comprar Agora →' },
+  { id: 3, nome: 'Cera automotiva profissional 500g', desc: 'Brilho de concessionária em casa. Formulação hidrofóbica de longa duração.', cat: 'limpeza', loja: 'ml', link: '#', img: '', emoji: '✨', badge: 'deal', btn: 'Ver Oferta →' },
+  { id: 4, nome: 'Organizador de porta-malas articulado', desc: 'Fim da bagunça no carro. Dobrável, resistente e com divisórias ajustáveis.', cat: 'organizacao', loja: 'ml', link: '#', img: '', emoji: '🎒', badge: 'deal', btn: 'Ver Oferta →' },
+  { id: 5, nome: 'Rádio 2 DIN Android 9" com GPS', desc: 'Transforme seu painel. Android, GPS, Bluetooth e Wi-Fi em um só aparelho.', cat: 'tecnologia', loja: 'shopee', link: '#', img: '', emoji: '🔊', badge: 'hot', btn: 'Comprar Agora →' },
+  { id: 6, nome: 'Kit envelopamento interno fibra de carbono', desc: 'Visual esportivo sem obra. Adesivo 3D reposicionável com acabamento premium.', cat: 'estetica', loja: 'ml', link: '#', img: '', emoji: '🏎️', badge: '', btn: 'Ver Oferta →' },
+  { id: 7, nome: 'Aspirador pó portátil 12V 120W', desc: 'Potência de aspirador em tamanho compacto. Liga direto no acendedor.', cat: 'limpeza', loja: 'shopee', link: '#', img: '', emoji: '🌀', badge: '', btn: 'Ver Oferta →' },
+  { id: 8, nome: 'Sensor de estacionamento 4 pontos', desc: 'Bipe proporcional à distância. Instalação simples, segurança de verdade.', cat: 'seguranca', loja: 'ml', link: '#', img: '', emoji: '🔔', badge: 'new', btn: 'Comprar Agora →' },
+];
+
+let catAtiva = 'todos';
+let buscaAtiva = '';
+let proxId = Math.max(...produtos.map(p => p.id), 0) + 1;
+
+function salvar() {
+  localStorage.setItem('vc_produtos', JSON.stringify(produtos));
+}
+
+function renderCard(p) {
+  const badgeMap = { hot: '<span class="card-badge badge-hot">🔥 Mais Vendido</span>', deal: '<span class="card-badge badge-deal">💰 Oferta</span>', new: '<span class="card-badge badge-new">🆕 Novo</span>' };
+  const imgHtml = p.img
+    ? `<img src="${p.img}" alt="${p.nome}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+    : '';
+  const emoji = p.emoji || '🚗';
+  const displayStyle = p.img ? '' : 'display:flex';
+  return `
+    <div class="card" data-id="${p.id}" data-cat="${p.cat}">
+      ${p.badge && badgeMap[p.badge] ? badgeMap[p.badge] : ''}
+      <div class="card-img">
+        ${imgHtml}
+        <div class="card-img-placeholder" style="${displayStyle}">${emoji}</div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">${CATS[p.cat] || p.cat}</span>
+        <p class="card-name">${p.nome}</p>
+        <p class="card-desc">${p.desc}</p>
+        <div class="card-store">
+          <div class="store-dot ${STORE_DOT[p.loja] || ''}"></div>
+          <span class="store-label">${LOJAS[p.loja] || p.loja}</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="btn-buy" href="${p.link}" target="_blank" rel="nofollow noopener">${p.btn || 'Ver Oferta →'}</a>
+      </div>
+    </div>`;
+}
+
+function renderTodos() {
+  let lista = produtos;
+  if (catAtiva !== 'todos') lista = lista.filter(p => p.cat === catAtiva);
+  if (buscaAtiva) {
+    const t = buscaAtiva.toLowerCase();
+    lista = lista.filter(p => p.nome.toLowerCase().includes(t) || (p.desc||'').toLowerCase().includes(t));
+  }
+
+  const grid = document.getElementById('grid-todos');
+  grid.innerHTML = lista.map(renderCard).join('');
+
+  const nr = document.getElementById('no-result');
+  nr.classList.toggle('show', lista.length === 0);
+  document.getElementById('qtd-label').textContent = lista.length > 0 ? `${lista.length} produto${lista.length > 1 ? 's' : ''}` : '';
+
+  // hot section
+  const hot = produtos.filter(p => p.badge === 'hot').slice(0, 4);
+  document.getElementById('grid-hot').innerHTML = hot.length ? hot.map(renderCard).join('') : '<div class="empty"><div style="font-size:32px">🚗</div><p>Adicione produtos com destaque "Mais vendido"</p></div>';
+  document.getElementById('mais-vendidos-section').style.display = hot.length ? '' : 'none';
+
+  // deal section
+  const deal = produtos.filter(p => p.badge === 'deal').slice(0, 4);
+  document.getElementById('grid-deal').innerHTML = deal.length ? deal.map(renderCard).join('') : '<div class="empty"><div style="font-size:32px">💰</div><p>Adicione produtos com destaque "Oferta do dia"</p></div>';
+  document.getElementById('ofertas-section').style.display = deal.length ? '' : 'none';
+}
+
+function filtrarCat(btn, cat) {
+  catAtiva = cat;
+  document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buscaAtiva = '';
+  document.getElementById('busca').value = '';
+  document.getElementById('titulo-todos').textContent = cat === 'todos' ? 'Todos os Produtos' : (CATS[cat] || 'Produtos');
+  renderTodos();
+  document.getElementById('produtos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function filtrarBusca() {
+  buscaAtiva = document.getElementById('busca').value.trim();
+  if (buscaAtiva) {
+    catAtiva = 'todos';
+    document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+    document.querySelector('.cat-pill').classList.add('active');
+    document.getElementById('titulo-todos').textContent = `Resultados para "${buscaAtiva}"`;
+  }
+  renderTodos();
+}
+
+function abrirAdmin(id) {
+  const f = document.getElementById('modal-form');
+  document.getElementById('modal-form-title').textContent = id ? 'Editar Produto' : 'Adicionar Produto';
+  document.getElementById('edit-id').value = id || '';
+  if (id) {
+    const p = produtos.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('f-nome').value = p.nome;
+    document.getElementById('f-desc').value = p.desc;
+    document.getElementById('f-cat').value = p.cat;
+    document.getElementById('f-loja').value = p.loja;
+    document.getElementById('f-link').value = p.link;
+    document.getElementById('f-img').value = p.img;
+    document.getElementById('f-emoji').value = p.emoji;
+    document.getElementById('f-badge').value = p.badge;
+    document.getElementById('f-btn').value = p.btn;
+  } else {
+    ['f-nome','f-desc','f-link','f-img'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-emoji').value = '🚗';
+    document.getElementById('f-badge').value = '';
+    document.getElementById('f-btn').value = 'Ver Oferta →';
+    document.getElementById('f-cat').value = 'seguranca';
+    document.getElementById('f-loja').value = 'shopee';
+  }
+  f.classList.add('open');
+}
+
+function fecharModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function salvarProduto() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const link = document.getElementById('f-link').value.trim();
+  if (!nome) { alert('Informe o nome do produto.'); return; }
+  if (!link) { alert('Informe o link de afiliado.'); return; }
+
+  const id = document.getElementById('edit-id').value;
+  const prod = {
+    id: id ? parseInt(id) : proxId++,
+    nome,
+    desc: document.getElementById('f-desc').value.trim(),
+    cat: document.getElementById('f-cat').value,
+    loja: document.getElementById('f-loja').value,
+    link,
+    img: document.getElementById('f-img').value.trim(),
+    emoji: document.getElementById('f-emoji').value.trim() || '🚗',
+    badge: document.getElementById('f-badge').value,
+    btn: document.getElementById('f-btn').value,
+  };
+
+  if (id) {
+    const idx = produtos.findIndex(p => p.id === parseInt(id));
+    if (idx >= 0) produtos[idx] = prod;
+  } else {
+    produtos.push(prod);
+  }
+
+  salvar();
+  renderTodos();
+  fecharModal('modal-form');
+}
+
+function abrirLista() {
+  const list = document.getElementById('prod-list');
+  list.innerHTML = produtos.map(p => `
+    <div class="prod-row">
+      <div class="prod-row-img">
+        ${p.img ? `<img src="${p.img}" alt="">` : p.emoji || '🚗'}
+      </div>
+      <div class="prod-row-info">
+        <p class="prod-row-name">${p.nome}</p>
+        <p class="prod-row-cat">${CATS[p.cat] || p.cat} • ${LOJAS[p.loja] || p.loja}</p>
+      </div>
+      <div class="prod-row-actions">
+        <button class="btn-edit" onclick="fecharModal('modal-lista');abrirAdmin(${p.id})">Editar</button>
+        <button class="btn-del" onclick="excluir(${p.id})">Excluir</button>
+      </div>
+    </div>`).join('') || '<p style="color:var(--muted);font-size:13px;text-align:center;padding:1rem">Nenhum produto cadastrado.</p>';
+  document.getElementById('modal-lista').classList.add('open');
+}
+
+function excluir(id) {
+  if (!confirm('Excluir este produto?')) return;
+  produtos = produtos.filter(p => p.id !== id);
+  salvar();
+  renderTodos();
+  abrirLista();
+}
+
+// fechar modal clicando fora
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+renderTodos();
+</script>
+</body>
+</html>
